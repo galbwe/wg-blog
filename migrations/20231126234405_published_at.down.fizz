@@ -1,0 +1,2 @@
+add_column("posts", "published", "bool", {})
+drop_column("posts", "published_at")

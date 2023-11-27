@@ -66,8 +66,13 @@ func App() *buffalo.App {
 		app.Use(translations())
 
 		app.GET("/", HomeHandler)
-
+		app.GET("/home", HomeHandler)
+		app.GET("/blog", BlogHandler)
+		app.GET("/blog/posts", BlogHandler)
+		app.GET("/blog/posts/{id}", BlogPostHandler)
 		app.ServeFiles("/", http.FS(public.FS())) // serve files from the public directory
+
+		// TODO: define admin views
 	})
 
 	return app

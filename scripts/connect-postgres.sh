@@ -1,0 +1,1 @@
+docker exec -it postgres-wgblog psql --username=postgres postgres

@@ -1,0 +1,2 @@
+add_column("posts", "published_at", "timestamp", {"null": true})
+drop_column("posts", "published")

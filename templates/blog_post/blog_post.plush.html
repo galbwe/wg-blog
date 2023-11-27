@@ -1,0 +1,17 @@
+<!-- VARIABLE DECLARATIONS -->
+<% 
+let weekday = post.PublishedAt.Time.Weekday()
+let month = post.PublishedAt.Time.Month()
+let day = post.PublishedAt.Time.Day()
+let year = post.PublishedAt.Time.Year()
+%>
+<!-- END VARIABLE DECLARATIONS -->
+<h1>
+    <%= post.Title %>
+</h1>
+<h2 class="published-at">
+    published <time><%=weekday%>, <%=month%> <%=day%> <%=year%></time>
+</h2>
+<p>
+    <%= post.Content %>
+</p>
