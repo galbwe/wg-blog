@@ -26,7 +26,6 @@ func (p Post) String() string {
 	return string(jp)
 }
 
-// Posts is not required by pop and may be deleted
 type Posts []Post
 
 // String is not required by pop and may be deleted

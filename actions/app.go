@@ -65,14 +65,37 @@ func App() *buffalo.App {
 		// Setup and use translations:
 		app.Use(translations())
 
+		// NOTE: this block should go before any resources
+		// that need to be protected by buffalo-goth!
+		//AuthMiddlewares
+		app.Use(SetCurrentUser)
+		app.Use(Authorize)
+
 		app.GET("/", HomeHandler)
 		app.GET("/home", HomeHandler)
-		app.GET("/blog", BlogHandler)
-		app.GET("/blog/posts", BlogHandler)
-		app.GET("/blog/posts/{id}", BlogPostHandler)
-		app.ServeFiles("/", http.FS(public.FS())) // serve files from the public directory
+		app.Middleware.Skip(Authorize, HomeHandler)
 
-		// TODO: define admin views
+		blog := app.Group("/blog")
+		blog.GET("/", BlogHandler)
+		blog.GET("/posts", BlogHandler)
+		blog.GET("/posts/{id}", BlogPostHandler)
+		blog.Middleware.Skip(Authorize, BlogHandler, BlogPostHandler)
+
+		//Routes for Auth
+		auth := app.Group("/auth")
+		auth.GET("/", AuthLanding)
+		auth.GET("/new", AuthNew)
+		auth.POST("/", AuthCreate)
+		auth.DELETE("/", AuthDestroy)
+		auth.Middleware.Skip(Authorize, AuthLanding, AuthNew, AuthCreate)
+
+		//Routes for User registration
+		users := app.Group("/users")
+		users.GET("/new", UsersNew)
+		users.POST("/", UsersCreate)
+		users.Middleware.Remove(Authorize)
+
+		app.ServeFiles("/", http.FS(public.FS())) // serve files from the public directory
 	})
 
 	return app
